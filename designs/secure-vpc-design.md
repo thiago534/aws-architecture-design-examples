@@ -1,40 +1,80 @@
-# Secure VPC Architecture Design (AWS)
+## Architecture Diagram
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                          AWS Cloud (Region)                         │
+│                                                                     │
+│  ┌───────────────────────────────────────────────────────────────┐ │
+│  │                          VPC (10.0.0.0/16)                     │ │
+│  │                                                                │ │
+│  │  ┌────────────────────────────────────────────────────────┐   │ │
+│  │  │         Internet Gateway                                │   │ │
+│  │  └──────────────────────┬─────────────────────────────────┘   │ │
+│  │                         │                                      │ │
+│  │  ┌──────────────────────▼──────────────────────────────┐      │ │
+│  │  │  Public Subnet (10.0.1.0/24) - AZ-1a               │      │ │
+│  │  │                                                     │      │ │
+│  │  │  ┌──────────────┐         ┌──────────────┐         │      │ │
+│  │  │  │ NAT Gateway  │         │ Bastion Host │         │      │ │
+│  │  │  │  (Elastic IP)│         │   (SSH)      │         │      │ │
+│  │  │  └──────┬───────┘         └──────────────┘         │      │ │
+│  │  └─────────┼──────────────────────────────────────────┘      │ │
+│  │            │                                                  │ │
+│  │  ┌─────────▼──────────────────────────────────────────┐      │ │
+│  │  │  Private Subnet (10.0.2.0/24) - AZ-1a             │      │ │
+│  │  │                                                    │      │ │
+│  │  │  ┌──────────────────┐    ┌──────────────────┐    │      │ │
+│  │  │  │  Web Tier        │    │   App Tier       │    │      │ │
+│  │  │  │  EC2 Instances   │───▶│  EC2 Instances   │    │      │ │
+│  │  │  │  (Auto Scaling)  │    │  (Auto Scaling)  │    │      │ │
+│  │  │  └──────────────────┘    └────────┬─────────┘    │      │ │
+│  │  └─────────────────────────────────────┼────────────┘      │ │
+│  │                                        │                    │ │
+│  │  ┌─────────────────────────────────────▼────────────┐      │ │
+│  │  │  Database Subnet (10.0.3.0/24) - AZ-1a          │      │ │
+│  │  │                                                  │      │ │
+│  │  │  ┌──────────────────┐    ┌──────────────────┐  │      │ │
+│  │  │  │   RDS Primary    │───▶│  RDS Standby     │  │      │ │
+│  │  │  │   (AZ-1a)        │    │   (AZ-1b)        │  │      │ │
+│  │  │  └──────────────────┘    └──────────────────┘  │      │ │
+│  │  └───────────────────────────────────────────────┘      │ │
+│  │                                                          │ │
+│  │  ┌───────────────────────────────────────────────────┐  │ │
+│  │  │           Security Components                      │  │ │
+│  │  │                                                    │  │ │
+│  │  │  • Security Groups (Stateful Firewall)            │  │ │
+│  │  │  • Network ACLs (Stateless Firewall)              │  │ │
+│  │  │  • VPC Flow Logs → CloudWatch                     │  │ │
+│  │  │  • AWS WAF (Web Application Firewall)             │  │ │
+│  │  │  • AWS Shield (DDoS Protection)                   │  │ │
+│  │  └───────────────────────────────────────────────────┘  │ │
+│  └──────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-## Use Case
-An organization hosting internal or sensitive workloads that require strong network isolation and controlled access.
+**Network Segmentation:**
 
-## Requirements
-- Secure network segmentation
-- Restricted internet access
-- Controlled inbound and outbound traffic
-- Clear separation of public and private resources
+| Subnet Type | CIDR | Access | Components |
+|-------------|------|--------|------------|
+| Public | 10.0.1.0/24 | Internet via IGW | NAT Gateway, Bastion |
+| Private (App) | 10.0.2.0/24 | Internet via NAT | Web/App Servers |
+| Private (DB) | 10.0.3.0/24 | No Internet | RDS Instances |
 
-## Architecture Overview
-- Single VPC with multiple Availability Zones
-- Public subnets for internet-facing resources (ALB, Bastion)
-- Private subnets for application and database layers
-- Internet Gateway attached to VPC
-- NAT Gateway for outbound internet access from private subnets
-- Security Groups and NACLs for traffic control
+**Security Layers:**
+1. **Network ACLs:** Subnet-level filtering
+2. **Security Groups:** Instance-level filtering
+3. **Bastion Host:** Controlled SSH access
+4. **Private Subnets:** Database isolation
+5. **VPC Flow Logs:** Traffic monitoring
 
-## Key Design Decisions
-- Private subnets used for application and database workloads
-- NAT Gateway allows outbound access without exposing private resources
-- Security Groups used as primary access control mechanism
-- NACLs used for an additional layer of network security
+**Cost:** ~$100-200/month (NAT Gateway + logging)  
+**Security Level:** High (defense in depth)  
+**Best For:** Compliance requirements, enterprise apps
+```
 
-## Access Control Approach
-- Internet-facing access only through Load Balancer
-- No direct internet access to application or database instances
-- SSH or admin access restricted via Bastion host or VPN
-- Least-privilege access enforced at network level
+---
 
-## Trade-offs
-- Increased cost due to NAT Gateway
-- Slightly higher operational complexity
-- Strongly reduced attack surface and blast radius
+# 🎯 AB YE KARO (10 minutes):
 
-## When to Use This Design
-- Enterprise or regulated workloads
-- Applications handling sensitive data
-- Environments requiring strict security controls
+## **Step 1: simple-web-app.md Edit Karo**
+```
+https://github.com/abhishek071700/aws-architecture-design-examples/blob/main/designs/simple-web-app.md
