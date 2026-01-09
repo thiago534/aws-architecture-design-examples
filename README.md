@@ -17,3 +17,12 @@ Each design is documented as a standalone example under the `designs/` directory
 ## Disclaimer
 These designs are for learning and reference purposes, based on hands-on exposure and AWS best practices.
 
+## Architecture Designs
+The following architecture examples are included:
+- Simple Web Application
+- Highly Available Web Application
+- Secure VPC Design
+
+Each design is documented with use cases, decisions, and trade-offs.
+
+
