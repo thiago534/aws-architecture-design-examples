@@ -25,4 +25,6 @@ The following architecture examples are included:
 
 Each design is documented with use cases, decisions, and trade-offs.
 
+Note: Architecture diagrams will be added in a future update.
+
 
