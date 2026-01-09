@@ -1,32 +1,45 @@
-# Simple Web Application Architecture (AWS)
+## Architecture Diagram
+```
+                           ┌─────────────┐
+                           │    Users    │
+                           └──────┬──────┘
+                                  │
+                                  │ HTTPS
+                                  ▼
+                     ┌────────────────────────┐
+                     │   Amazon CloudFront    │
+                     │        (CDN)           │
+                     └───────────┬────────────┘
+                                 │
+                                 │
+                    ┌────────────▼────────────┐
+                    │    Application Load     │
+                    │       Balancer          │
+                    └────────────┬────────────┘
+                                 │
+                                 │
+                    ┌────────────▼────────────┐
+                    │      EC2 Instance       │
+                    │   (Web + App Server)    │
+                    │    t3.medium            │
+                    └────────────┬────────────┘
+                                 │
+                    ┌────────────┴────────────┐
+                    │                         │
+          ┌─────────▼──────────┐   ┌─────────▼──────────┐
+          │   Amazon RDS       │   │    Amazon S3       │
+          │   (MySQL)          │   │  (Static Assets)   │
+          │   Single-AZ        │   │                    │
+          └────────────────────┘   └────────────────────┘
+```
 
-## Use Case
-A small startup or MVP application that needs to go live quickly with minimal cost and operational overhead.
+**Key Components:**
+- **CloudFront:** Global CDN for fast content delivery
+- **ALB:** Application Load Balancer for traffic distribution
+- **EC2:** Single instance running web application
+- **RDS:** MySQL database (single availability zone)
+- **S3:** Storage for static files (images, CSS, JS)
 
-## Requirements
-- Low initial cost
-- Simple deployment and maintenance
-- Basic availability
-- Ability to scale later if required
-
-## Architecture Overview
-- Single VPC
-- Public subnet for application access
-- EC2 instance hosting the web application
-- Application Load Balancer (optional at early stage)
-- RDS (single AZ) for database
-
-## Key Design Decisions
-- EC2 used instead of managed containers to keep setup simple
-- Single AZ chosen to reduce cost
-- Managed database used to reduce operational effort
-
-## Trade-offs
-- Limited fault tolerance due to single AZ
-- Manual scaling required initially
-- Lower availability compared to multi-AZ designs
-
-## When to Use This Design
-- Early-stage products
-- Proof-of-concept workloads
-- Non-critical applications
+**Cost:** ~$50-100/month  
+**Availability:** 95-98%  
+**Best For:** Small websites, MVPs, learning projects
